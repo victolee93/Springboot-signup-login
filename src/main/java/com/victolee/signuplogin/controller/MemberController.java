@@ -35,9 +35,6 @@ public class MemberController {
 
     @GetMapping("/login/result")
     public String dispLoginResult() {
-//        if(성공) {
-//            return "/loginSuccess";
-//        }
-        return "redirect:/login";
+        return "/loginSuccess";
     }
 }

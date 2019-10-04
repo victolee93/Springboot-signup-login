@@ -2,8 +2,6 @@ package com.victolee.signuplogin.config;
 
 import com.victolee.signuplogin.service.MemberService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
     private MemberService memberService;
 
     @Bean
@@ -35,20 +33,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers( "/**").permitAll()
-            .antMatchers( "/admin").hasRole("ADMIN")
+            .antMatchers( "/admin/**").hasRole("ADMIN")
             .antMatchers( "/user/myinfo").hasRole("MEMBER")
-            .anyRequest().authenticated()
         .and()
             .formLogin()
             .loginPage("/user/login")
-            .defaultSuccessUrl("/map")
+            .defaultSuccessUrl("/login/result")
             .permitAll()
         .and()
             .logout();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
 }
