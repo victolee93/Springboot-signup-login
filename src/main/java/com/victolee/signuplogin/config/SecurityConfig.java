@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -26,22 +27,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception
     {
+        // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 )
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers( "/**").permitAll()
-            .antMatchers( "/admin/**").hasRole("ADMIN")
-            .antMatchers( "/user/myinfo").hasRole("MEMBER")
-        .and()
-            .formLogin()
-            .loginPage("/user/login")
-            .defaultSuccessUrl("/login/result")
-            .permitAll()
-        .and()
-            .logout();
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user/myinfo").hasRole("MEMBER")
+                .antMatchers("/**").permitAll()
+            .and()
+                .formLogin()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/user/login/result")
+                .permitAll()
+            .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                .logoutSuccessUrl("/user/logout/result")
+                .invalidateHttpSession(true)
+            .and()
+                .exceptionHandling().accessDeniedPage("/user/denied");
     }
 
     @Override

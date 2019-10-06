@@ -8,7 +8,7 @@
     <h1>로그인</h1>
     <hr>
 
-    <form action="/login" method="post">
+    <form action="/user/login" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
         <input type="text" name="username" placeholder="이메일 입력해주세요">

@@ -12,29 +12,54 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MemberController {
     private MemberService memberService;
 
-    @GetMapping("/signup")
+    @GetMapping("/")
+    public String index() {
+        return "/index";
+    }
+
+    @GetMapping("/user/signup")
     public String dispSignup() {
         return "/signup";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public String execSignup(MemberDto memberDto) {
         memberService.joinUser(memberDto);
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public String dispLogin() {
         return "/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public String execLogin() {
-        return "redirect:/login/result";
+        return "redirect:/user/login/result";
     }
 
-    @GetMapping("/login/result")
+    @GetMapping("/user/login/result")
     public String dispLoginResult() {
         return "/loginSuccess";
+    }
+
+    @GetMapping("/user/logout/result")
+    public String dispLogout() {
+        return "/logout";
+    }
+
+    @GetMapping("/user/denied")
+    public String dispDenied() {
+        return "/denied";
+    }
+
+    @GetMapping("/user/info")
+    public String dispMyInfo() {
+        return "/myinfo";
+    }
+
+    @GetMapping("/admin")
+    public String dispAdmin() {
+        return "/admin";
     }
 }
