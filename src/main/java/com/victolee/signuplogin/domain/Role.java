@@ -1,7 +1,7 @@
 package com.victolee.signuplogin.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+        import lombok.AllArgsConstructor;
+        import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
